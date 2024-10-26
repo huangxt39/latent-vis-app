@@ -20,6 +20,18 @@ def span_maker(token: str, color_value: float, norm_term: float):
 def click_random(examples):
     st.session_state.sel_example_idx = random.randint(0, len(examples)-1)
 
+def show_one_sample(str_tokens, score, max_idx, prev_ctx, futr_ctx):
+    shown_value = f"<span> {score[max_idx]:.3f} ; </span>"
+    str_tokens[max_idx] = "<u>" + str_tokens[max_idx] + "</u>"
+
+    length = len(str_tokens)
+    s_idx = 0 if prev_ctx == "inf" else max(0, max_idx-int(prev_ctx))
+    e_idx = length if futr_ctx == "inf" else min(length, max_idx+int(futr_ctx)+1)
+    str_tokens = str_tokens[s_idx:e_idx]
+    score = score[s_idx:e_idx]
+    
+    row = f'<div style="margin-bottom: 8px;">' + shown_value + "".join([span_maker(t, v, max_v) for t, v in zip(str_tokens, score)]) + '</div>'
+    st.markdown(row, unsafe_allow_html=True)
 
 root_path = "./organized"
 
@@ -51,32 +63,12 @@ if sel_bin == "All":
         obj_list = obj_list[:num_sample_per_bin]    # prioritize big v
         st.text("Bin:  "+bin_name)
         for str_tokens, score, max_idx in obj_list:
-            shown_value = f"<span> {score[max_idx]:.3f} ; </span>"
-            str_tokens[max_idx] = "<u>" + str_tokens[max_idx] + "</u>"
-
-            length = len(str_tokens)
-            s_idx = 0 if prev_ctx == "inf" else max(0, max_idx-int(prev_ctx))
-            e_idx = length if futr_ctx == "inf" else min(length, max_idx+int(futr_ctx)+1)
-            str_tokens = str_tokens[s_idx:e_idx]
-            score = score[s_idx:e_idx]
-            
-            row = f'<div style="margin-bottom: 8px;">' + shown_value + "".join([span_maker(t, v, max_v) for t, v in zip(str_tokens, score)]) + '</div>'
-            st.markdown(row, unsafe_allow_html=True)
+            show_one_sample(str_tokens, score, max_idx, prev_ctx, futr_ctx)
         st.divider()
 else:
     obj_list = cache_obj[sel_bin][:num_sample_per_bin]    # prioritize big v
     st.text("Bin:  "+sel_bin)
     for str_tokens, score, max_idx in obj_list:
-        shown_value = f"<span> {score[max_idx]:.3f} ; </span>"
-        str_tokens[max_idx] = "<u>" + str_tokens[max_idx] + "</u>"
-
-        length = len(str_tokens)
-        s_idx = 0 if prev_ctx == "inf" else max(0, max_idx-int(prev_ctx))
-        e_idx = length if futr_ctx == "inf" else min(length, max_idx+int(futr_ctx)+1)
-        str_tokens = str_tokens[s_idx:e_idx]
-        score = score[s_idx:e_idx]
-        
-        row = f'<div style="margin-bottom: 8px;">' + shown_value + "".join([span_maker(t, v, max_v) for t, v in zip(str_tokens, score)]) + '</div>'
-        st.markdown(row, unsafe_allow_html=True)
+        show_one_sample(str_tokens, score, max_idx, prev_ctx, futr_ctx)
 
     
