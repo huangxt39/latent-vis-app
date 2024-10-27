@@ -37,7 +37,7 @@ def show_one_sample(str_tokens, score, max_idx, prev_ctx, futr_ctx):
 
 root_path = "./latent_acts"
 
-selected_cc = st.sidebar.selectbox("Crosscoder", os.listdir(root_path), index=0)
+selected_cc = st.sidebar.selectbox("Crosscoder", os.listdir(root_path), index=os.listdir(root_path).index("v2_17"))
 st.session_state.selected_cc = selected_cc
 cc_path = os.path.join(root_path, selected_cc)
 
