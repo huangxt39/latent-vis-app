@@ -69,6 +69,8 @@ show_figures_per_latent(decoder_vec)
 
 if show_info:
     st.caption("""
+            50 latents are sampled uniformly from each Crosscoder
+               
             The underscored token is the position where the latent is activated most strongly across the whole sequence. 
             The number at the begining of each sequence shows this latent activation value. 
             
@@ -78,6 +80,8 @@ if show_info:
             Color indicates how much the latent is activated in each token position. Hover to see the exact value.
             
             The prev/future context on the left side bar is to adjust the number of tokens shown before/after the underscored token.
+               
+            source code: https://github.com/huangxt39/latent-vis-app
             """)
 
 max_v = float(list(cache_obj.keys())[0].split(" - ")[1])
