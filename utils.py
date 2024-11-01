@@ -34,7 +34,7 @@ def show_figures_per_latent(decoder_vec: np.ndarray):
     cossim_min_y = min(0, cos_sim.min()-0.05)
     cossim_max_y = 1+0.1
     fig.update_yaxes(range=[cossim_min_y, cossim_max_y], row=1, col=2)  # Extend range a bit above max for clarity
-    fig.update_yaxes(range=[0, None], row=1, col=1)  # Extend range a bit above max for clarity
+    fig.update_yaxes(range=[0, norms.max()+0.05], row=1, col=1)  # Extend range a bit above max for clarity
 
     fig.add_shape(
         type="line",
