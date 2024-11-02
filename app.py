@@ -85,10 +85,15 @@ if show_info:
             
             The prev/future context on the left side bar is to adjust the number of tokens shown before/after the underscored token.
                
-            source code: https://github.com/huangxt39/latent-vis-app
+            The input attribution shows how the activation of the latent at the underscored token can be attributed to previous tokens. 
+            In other words, it's only for the peak value in the sequence.
+               
+            When training crosscoder, the activations are normalized, and the crosscoder is reconstructing the normalized version. 
+            "unnormalized decoder" means to multiply decoder vector with the normalizatioin term.
             """)
 
-max_v = float(list(cache_obj.keys())[0].split(" - ")[1])
+# max_v = float(list(cache_obj.keys())[0].split(" - ")[1])
+max_v = max([float(k.split(" - ")[1]) for k in cache_obj.keys()])
 if sel_bin == "All":
     for bin_name, obj_list in cache_obj.items():
         obj_list = obj_list[:num_sample_per_bin]    # prioritize big v
